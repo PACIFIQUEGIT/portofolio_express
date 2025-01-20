@@ -5,6 +5,7 @@ const AppError = require("../utils/appError");
 
 exports.login = catchAsync(async (req, res) => {
     const { email, password } = req.body
+    console.log('BODY', email, password)
     if (!email || !password) {
         throw new AppError("Email and Password are required", 400)
     }
