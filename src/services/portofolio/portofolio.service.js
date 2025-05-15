@@ -2,8 +2,13 @@ const {Portofolio} = require("../../database/models/portofolio");
 const {catchAsync} = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
 
-exports.createProject = catchAsync(async(projectData) => {
+exports.createProject = catchAsync(async (projectData) => {
     try {
+        // Auto-assign imageUrl from images[0] if not provided
+        if (!projectData.imageUrl && Array.isArray(projectData.images) && projectData.images.length > 0) {
+            projectData.imageUrl = projectData.images[0];
+        }
+
         const project = await Portofolio.create(projectData);
         return project;
     } catch (error) {

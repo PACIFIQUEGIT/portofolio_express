@@ -8,7 +8,7 @@ exports.createAbout = async(req, res) => {
     };
     try {
         const user = req.user.id;
-        const aboutData = {title, description, skills, images, user};
+        const aboutData = {title, description, images, user};
         const about = await createAbout(aboutData);
         res.status(201).json(about);
     } catch (error) {

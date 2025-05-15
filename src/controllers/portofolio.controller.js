@@ -2,14 +2,29 @@ const {createProject, getProject, updateProject, deleteProject, allProjects} = r
 const { catchAsync } = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
-exports.createProject = catchAsync(async(req, res) => {
-    const {title, description, skills, images} = req.body;
-    if(!title || !description || !skills) {
-        throw new AppError("Title, description, and skills are required", 400);
-    };
+exports.createProject = catchAsync(async (req, res) => {
+    const { title, description, skills, images, projectUrl } = req.body;
+
+    if (!title || !description || !skills || !projectUrl) {
+        throw new AppError("Title, description, skills, and projectUrl are required", 400);
+    }
+
     try {
         const user = req.user.id;
-        const projectData = {title, description, skills, images, user};
+
+        // Use first image as imageUrl, or fallback to default
+        const imageUrl = (images && images.length > 0) ? images[0] : 'images/default.png';
+
+        const projectData = {
+            title,
+            description,
+            skills,
+            images,
+            imageUrl,
+            projectUrl,
+            user
+        };
+
         const project = await createProject(projectData);
         res.status(201).json(project);
     } catch (error) {
