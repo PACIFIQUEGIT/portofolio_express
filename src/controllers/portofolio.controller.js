@@ -3,7 +3,7 @@ const { catchAsync } = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 exports.createProject = catchAsync(async (req, res) => {
-    const { title, description, skills, images, projectUrl } = req.body;
+    const { title, description, skills, images, projectUrl, imageUrl } = req.body;
 
     if (!title || !description || !skills || !projectUrl) {
         throw new AppError("Title, description, skills, and projectUrl are required", 400);
@@ -11,9 +11,7 @@ exports.createProject = catchAsync(async (req, res) => {
 
     try {
         const user = req.user.id;
-
-        // Use first image as imageUrl, or fallback to default
-        const imageUrl = (images && images.length > 0) ? images[0] : 'images/default.png';
+        console.log('images:', images);
 
         const projectData = {
             title,
